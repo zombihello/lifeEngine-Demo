@@ -1,0 +1,24 @@
+{
+	"version": 2,
+	"surface": "wood",
+	"editor": "textures/texture_chair.png",
+	
+	"technique":
+	{
+		"type": "deffered_shading",
+		"pass":
+		{	
+			"shader": "UnlitGeneric",
+			"depthTest": true,
+			"depthWrite": true,
+			"blend": false,
+			"cullface": true,
+			"cullface_type": "back",
+			
+			"parameters": 
+			{
+				"basetexture": "textures/texture_chair.png"
+			}
+		}
+	}
+}

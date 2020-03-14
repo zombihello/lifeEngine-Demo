@@ -1,0 +1,7 @@
+{
+	"surface": "wood",
+	"shader": "UnlitGeneric",
+	"shader_parameters": {
+		"basetexture": "textures/texture_chair.png"
+	}
+}

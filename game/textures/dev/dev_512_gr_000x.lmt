@@ -1,0 +1,24 @@
+{
+	"version": 2,
+	"surface": "wood",
+	"editor": "textures/dev/dev_512_gr_000x.jpg",
+
+	"technique":
+	{
+		"type": "deffered_shading",
+		"pass":
+		{
+			"shader": "LightmappedGeneric",
+			"depthTest": true,
+			"depthWrite": true,
+			"blend": false,
+			"cullface": true,
+			"cullface_type": "front",
+
+			"parameters":
+			{
+				"basetexture": "textures/dev/dev_512_gr_000x.jpg"
+			}
+		}
+	}
+}

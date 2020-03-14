@@ -1,0 +1,10 @@
+{
+	"surface": "wood",
+	"shader": "UnlitGeneric",
+
+	"shader_parameters": 
+	{
+		"basetexture": "header_1.jpg",
+		"color": [255, 0, 0, 255]
+	}
+}

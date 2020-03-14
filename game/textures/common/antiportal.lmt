@@ -1,0 +1,24 @@
+{
+	"version": 2,
+	"surface": "wood",
+	"editor": "textures/common/antiportal.tga",
+
+	"technique":
+	{
+		"type": "deffered_shading",
+		"pass":
+		{
+			"shader": "LightmappedGeneric",
+			"depthTest": true,
+			"depthWrite": true,
+			"blend": false,
+			"cullface": true,
+			"cullface_type": "front",
+
+			"parameters":
+			{
+				"basetexture": "textures/common/antiportal.tga"
+			}
+		}
+	}
+}

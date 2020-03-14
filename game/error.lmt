@@ -1,0 +1,10 @@
+{
+	"surface": "wood",
+	"shader": "LightmappedGeneric",
+
+	"shader_parameters": 
+	{
+		"basetexture": "Error.png",
+		"color": [255, 0, 0, 255]
+	}
+}
