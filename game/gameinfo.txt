@@ -1,5 +1,5 @@
 {
 	"title": "Eliot: Episodic",
 	"gameDLL": "episodic.dll",
-	"icon": "icon.png"
+	"icon": "valve.jpg"
 }
