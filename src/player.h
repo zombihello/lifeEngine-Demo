@@ -1,38 +1,58 @@
+//////////////////////////////////////////////////////////////////////////
+//
+//					*** Eliot: Episodic ***
+//					Copyright (C) 2020
+//
+// Репозиторий:		https://github.com/zombihello/Eleot-Episodic/
+// Авторы:			Егор Погуляка (zombiHello)
+//
+//////////////////////////////////////////////////////////////////////////
+
 #ifndef PLAYER_H
 #define PLAYER_H
+
 #include "engine/iconcmd.h"
-#include "global.h"
-#include "physics/ibody.h"
-#include "physics/iphysicssystem.h"
-#include "engine/iengine.h"
-#include "engine/iwindow.h"
+#include "engine/icamera.h"
+#include "physics/icharactercontroller.h"
 
+#include "tsingleton.h"
 
-//TODO: add Update and fix move
+//---------------------------------------------------------------------//
 
-class Player
+enum CAMERA_TYPE
+{
+	CT_PHYSICS,
+	CT_FLY
+};
+
+//---------------------------------------------------------------------//
+
+class Player : public TSingleton< Player >
 {
 public:
+	// Player
 	Player();
 	~Player();
-	bool Initialize(le::IEngine* engine);
-	
-	void SetPosition( const le::Vector3D_t& Position );
-	void Update();
-	void Move( const le::Vector3D_t& OffsetMove );
 
-	le::Vector3D_t  GetPosition(  );
-	le::IBody* GetBody(  );
-	le::ICamera* GetCamera(  );
+	void					Initialize();
+	void					Update();
 
-	friend void  CMD_MoveLeft(le::UInt32_t CountArguments, const char** Arguments);
-	friend void  CMD_MoveRight(le::UInt32_t CountArguments, const char** Arguments);
-	friend void  CMD_MoveForward(le::UInt32_t CountArguments, const char** Arguments);
-	friend void  CMD_MoveBackward(le::UInt32_t CountArguments, const char** Arguments);
+	void					SetCameraType( CAMERA_TYPE CameraType );
+	void					SetPosition( const le::Vector3D_t& Position );
+
+	inline le::ICamera*		GetCamera() const	{ return camera; }
+
 private:
-	bool isInitialize;
-	le::IBody* body;
-	le::ICamera* camera;
+	void					CreateBody();
+	void					DeleteBody();
 
+	bool							isInitialize;
+
+	CAMERA_TYPE						cameraType;
+	le::ICamera*					camera;
+	le::ICharcterController*		controller;
 };
-#endif// !PLAYER_H
+
+//---------------------------------------------------------------------//
+
+#endif // !PLAYER_H

@@ -1,29 +1,40 @@
 //////////////////////////////////////////////////////////////////////////
 //
-//				*** Eliot: Episodic ***
-//				Copyright (C) 2019
+//					*** Eliot: Episodic ***
+//					Copyright (C) 2020
 //
-// ����������� ����:	https://github.com/zombihello/Eleot-Episodic
-// ������:				���� �������� (zombiHello)
+// Репозиторий:		https://github.com/zombihello/Eleot-Episodic/
+// Авторы:			Егор Погуляка (zombiHello)
 //
 //////////////////////////////////////////////////////////////////////////
+
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include "engine/iengine.h"
 #include "engine/iconsolesystem.h"
 #include "engine/iinputsystem.h"
-#include "engine/icamera.h"
+#include "engine/iresourcesystem.h"
+#include "engine/iwindow.h"
+#include "studiorender/istudiorender.h"
 #include "physics/iphysicssystem.h"
 
-class Player;
+#include "engine/icamera.h"
 
 //---------------------------------------------------------------------//
 
-extern le::IConsoleSystem*			g_consoleSystem;
-extern le::IInputSystem*			g_inputSystem;
-extern le::ICamera*					g_camera;
-extern le::IPhysicsSystem*			g_physicsSystem;
-extern Player* player;
+class Game;
 
 //---------------------------------------------------------------------//
-#endif //!GLOBAL_H
+
+extern le::IEngine*				g_engine;
+extern le::IConsoleSystem*		g_consoleSystem;
+extern le::IInputSystem*		g_inputSystem;
+extern le::IStudioRender*		g_studioRender;
+extern le::IResourceSystem*		g_resourceSystem;
+extern le::IPhysicsSystem*		g_physicsSystem;
+extern le::IWindow*				g_window;
+
+//---------------------------------------------------------------------//
+
+#endif // !GLOBAL_H

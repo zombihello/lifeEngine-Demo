@@ -12,15 +12,15 @@ set( BUILD_DIR ${PROJECT_SOURCE_DIR}/../game )
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${LIFEENGINE_SDK_PATH}/cmake" )
 
 if( LIFEENGINE_DEBUG )
-	message( STATUS "Debug mode enabled" )
-	add_definitions( -DLIFEENGINE_DEBUG )
+        message( STATUS "Debug mode enabled" )
+        add_definitions( -DLIFEENGINE_DEBUG )
 endif()
 
 #
 #   --- Задаем переменные ---
 #
 
-file( GLOB SOURCE_FILES "*.h" "*.cpp" )
+file( GLOB SOURCE_FILES "*.h" "*.cpp" "entites/*.cpp" "entites/*.h" )
 set( MODULE_NAME episodic )
 
 #
@@ -28,15 +28,16 @@ set( MODULE_NAME episodic )
 #
 
 add_library( ${MODULE_NAME} SHARED ${SOURCE_FILES} )
+set_target_properties( ${MODULE_NAME} PROPERTIES PREFIX "" )
 include_directories( ${CMAKE_BINARY_DIR}/${MODULE_NAME} )
 
 install( TARGETS ${MODULE_NAME} DESTINATION ${BUILD_DIR} )
 
-add_custom_target( Launch DEPENDS ${MODULE_NAME} ) 
-add_custom_command( TARGET Launch 
-					COMMAND ${LIFEENGINE_SDK_LAUNCHER} -game ${BUILD_DIR} 
-					WORKING_DIRECTORY ${LIFEENGINE_SDK_LAUNCHER_DIR}
-					COMMENT "Game start..." )
+add_custom_target( Launch DEPENDS ${MODULE_NAME} )
+add_custom_command( TARGET Launch
+                                        COMMAND ${LIFEENGINE_SDK_LAUNCHER} -game ${BUILD_DIR}
+                                        WORKING_DIRECTORY ${LIFEENGINE_SDK_LAUNCHER_DIR}
+                                        COMMENT "Game start..." )
 #
 #   --- Ищим и подключаем зависимости ---
 #
