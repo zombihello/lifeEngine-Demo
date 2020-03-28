@@ -24,10 +24,13 @@ void Func_Rotating::Update()
 	if ( isNeedUpdatePosition )
 	{
 		model->SetPosition( position );
+		body->SetPosition( position );
+
 		isNeedUpdatePosition = false;
 	}
 
 	model->Rotate( le::Vector3D_t( 0, speed, 0 ) );
+	body->SetRotation( model->GetRotation() );
 }
 
 // ------------------------------------------------------------------------------------ //
@@ -41,7 +44,10 @@ void Func_Rotating::KeyValue( const char* Key, const char* Value )
 		if ( idModel == -1 )		return;
 
 		model = level->GetModel( idModel );
+		body = level->GetBody( idModel );
+
 		if ( model ) model->IncrementReference();
+		if ( body ) body->IncrementReference();
 	}
 	else if ( strcmp( Key, "Speed" ) == 0 )
 		speed = StringToNumber< float >( Value, DEFAULT_SPEED );

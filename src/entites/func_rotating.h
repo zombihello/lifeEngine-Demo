@@ -12,6 +12,7 @@
 #define FUNC_ROTATING_H
 
 #include "engine/imodel.h"
+#include "physics/ibody.h"
 #include "baseentity.h"
 
 //---------------------------------------------------------------------//
@@ -30,7 +31,9 @@ public:
 private:
 	bool					isNeedUpdatePosition;
 	float					speed;
+
 	le::IModel*				model;
+	le::IBody*				body;
 };
 
 //---------------------------------------------------------------------//

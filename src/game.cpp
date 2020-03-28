@@ -22,6 +22,7 @@
 #include "game.h"
 #include "world.h"
 #include "player.h"
+#include "buildnum.h"
 
 //---------------------------------------------------------------------//
 
@@ -58,6 +59,8 @@ bool Game::Initialize( le::IEngine* Engine, le::UInt32_t CountArguments, const c
 		g_window = Engine->GetWindow();
 		g_resourceSystem = Engine->GetResourceSystem();
 		g_physicsSystem = Engine->GetPhysicsSystem();
+
+		g_consoleSystem->PrintInfo( "Eleot-Episodic build %i", Game_BuildNumber() );
 
 		isShowingCursor = false;
 		g_window->SetShowCursor( isShowingCursor );

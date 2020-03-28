@@ -29,6 +29,8 @@ void Func_Door::Update()
 	if ( isNeedUpdate )
 	{
 		model->SetPosition( position );
+		body->SetPosition( position );
+
 		startRotation = le::Quaternion_t( le::Vector3D_t( 0.f, 0.f, 0.f ) );
 		endRotation = le::Quaternion_t( le::Vector3D_t( 0.f, glm::radians( angleMax ), 0.f ) );
 		isNeedUpdate = false;
@@ -50,11 +52,13 @@ void Func_Door::Update()
 	{
 		donePercentag = glm::min( 1.f, donePercentag + speedOpen );
 		model->SetRotation( glm::slerp( startRotation, endRotation, donePercentag ) );
+		body->SetRotation( model->GetRotation() );
 	}
 	else if ( isClose && donePercentag > 0.f )
 	{
 		donePercentag = glm::max( 0.f, donePercentag - speedClose );
 		model->SetRotation( glm::slerp( startRotation, endRotation, donePercentag ) );
+		body->SetRotation( model->GetRotation() );
 	}
 }
 
@@ -69,7 +73,10 @@ void Func_Door::KeyValue( const char* Key, const char* Value )
 		if ( idModel == -1 )		return;
 
 		model = level->GetModel( idModel );
+		body = level->GetBody( idModel );
+
 		if ( model ) model->IncrementReference();
+		if ( body ) body->IncrementReference();
 	}
 	else if ( strcmp( Key, "origin" ) == 0 )
 	{
@@ -95,6 +102,7 @@ Func_Door::Func_Door() :
 	isOpen( false ),
 	isClose( true ),
 	model( nullptr ),
+	body( nullptr ),
 	donePercentag( 0.f ),
 	angleMax( DEFAULT_ANGLE_MAX ),
 	speedOpen( DEFAULT_SPEED_OPEN ),

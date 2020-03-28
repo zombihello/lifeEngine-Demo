@@ -12,6 +12,7 @@
 #define FUNC_DOOR_H
 
 #include "engine/imodel.h"
+#include "physics/ibody.h"
 #include "baseentity.h"
 
 //---------------------------------------------------------------------//
@@ -38,6 +39,7 @@ private:
 	float					speedClose;
 
 	le::IModel*				model;
+	le::IBody*				body;
 	le::Quaternion_t		startRotation;
 	le::Quaternion_t		endRotation;
 };

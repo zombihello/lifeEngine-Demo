@@ -9,11 +9,13 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include <stdexcept>
+#include <string>
 
 #include "engine/ifactory.h"
 
 #include "global.h"
 #include "hud.h"
+#include "buildnum.h"
 
 // ------------------------------------------------------------------------------------ //
 // Constructor
@@ -71,7 +73,8 @@ void HUD::Initialize()
 	versionEngine->SetFont( fontUI );
 	versionEngine->SetCharacterSize( 25 );
 	versionEngine->SetPosition( le::Vector3D_t( 5, windowHeight - 25, 1 ) );
-	versionEngine->SetText( "lifeEngine " LIFEENGINE_VERSION );
+	versionEngine->SetText( ( "Eleot-Episodic (build " + std::to_string( Game_BuildNumber() ) + ")" ).c_str() );
+
 	isInitialize = true;
 }
 

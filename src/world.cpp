@@ -8,7 +8,10 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include <stdexcept>
+
 #include "engine/lifeengine.h"
+#include "engine/imodel.h"
 
 #include "global.h"
 #include "game.h"
@@ -32,6 +35,21 @@ bool World::LoadLevel( const std::string& MapName )
 
 	player->Initialize();
 	hud->Initialize();
+
+	le::IMesh*		mesh = g_resourceSystem->LoadMesh( "quake_axe", "models/Quake_axe.lmd" );
+	if ( mesh )
+	{
+		le::IFactory*			factory = g_engine->GetFactory();
+		le::IModel*				model = ( le::IModel* ) factory->Create( MODEL_INTERFACE_VERSION );
+		if ( !model )			throw std::runtime_error( "le::IModel interface version[" MODEL_INTERFACE_VERSION "] not found in engine factory" );
+
+		model->SetMesh( mesh );
+		model->SetPosition( le::Vector3D_t( 0, 120, -55 ) );
+		model->SetScale( le::Vector3D_t( 50, 50, 50 ) );
+		model->SetRotation( le::Vector3D_t( glm::radians(90.f), 0, 0 ) );
+		model->Rotate( le::Vector3D_t( 0, glm::radians(24.f), 0 ) );
+		level->AddModel( model );
+	}
 
 	level->AddCamera( player->GetCamera() );
 	level->IncrementReference();

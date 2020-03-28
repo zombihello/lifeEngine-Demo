@@ -14,6 +14,7 @@
 #include "engine/icamera.h"
 #include "engine/ifont.h"
 #include "engine/itext.h"
+#include "engine/imodel.h"
 
 #include "tsingleton.h"
 
