@@ -74,7 +74,7 @@ void Player::Initialize()
 // Update player
 // ------------------------------------------------------------------------------------ //
 void Player::Update()
-{
+{	
 	camera->RotateByMouse( g_inputSystem->GetMouseOffset(), g_inputSystem->GetMouseSensitivity() );
 
 	Input*			input = Input::GetInstance();

@@ -28,8 +28,8 @@ class Game : public le::IGame, public TSingleton< Game >
 public:
 	// IGame
 	virtual bool			Initialize( le::IEngine* Engine, le::UInt32_t CountArguments, const char** Arguments );
-	virtual void			FixedUpdate();
 	virtual void			Update();
+	virtual void			Render();
 	virtual void			OnEvent( const le::Event& Event );
 
 	// Game

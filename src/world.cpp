@@ -22,7 +22,6 @@
 // ------------------------------------------------------------------------------------ //
 // Load level
 // ------------------------------------------------------------------------------------ //
-
 bool World::LoadLevel( const std::string& MapName )
 {
 	UnloadLevel();
@@ -44,10 +43,11 @@ bool World::LoadLevel( const std::string& MapName )
 		if ( !model )			throw std::runtime_error( "le::IModel interface version[" MODEL_INTERFACE_VERSION "] not found in engine factory" );
 
 		model->SetMesh( mesh );
-		model->SetPosition( le::Vector3D_t( 0, 120, -55 ) );
+		model->SetPosition( le::Vector3D_t( 0, 150, -55 ) );
 		model->SetScale( le::Vector3D_t( 50, 50, 50 ) );
 		model->SetRotation( le::Vector3D_t( glm::radians(90.f), 0, 0 ) );
 		model->Rotate( le::Vector3D_t( 0, glm::radians(24.f), 0 ) );
+
 		level->AddModel( model );
 	}
 
@@ -71,18 +71,18 @@ void World::UnloadLevel()
 }
 
 // ------------------------------------------------------------------------------------ //
-// Fixed update world
+// Update world
 // ------------------------------------------------------------------------------------ //
-void World::FixedUpdate()
-{
+void World::Update()
+{	
 	player->Update();
 	level->Update();
 }
 
 // ------------------------------------------------------------------------------------ //
-// Update world
+// Render world
 // ------------------------------------------------------------------------------------ //
-void World::Update()
+void World::Render()
 {
 	level->Render();
 	hud->Render();

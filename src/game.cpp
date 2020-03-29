@@ -76,7 +76,7 @@ bool Game::Initialize( le::IEngine* Engine, le::UInt32_t CountArguments, const c
 			else if ( strstr( Arguments[ index ], "-dev" ) || strstr( Arguments[ index ], "-debug" ) )
 				isDebugMode = true;
 		}
-
+srand( time( 0 ) );
 		// Initialize console commands
 		le::IFactory*			consoleSystemFactory = g_consoleSystem->GetFactory();
 		cmd_noclip = ( le::IConCmd* ) consoleSystemFactory->Create( CONCMD_INTERFACE_VERSION );
@@ -96,15 +96,6 @@ bool Game::Initialize( le::IEngine* Engine, le::UInt32_t CountArguments, const c
 	}
 
 	return true;
-}
-
-// ------------------------------------------------------------------------------------ //
-// Fixed update game
-// ------------------------------------------------------------------------------------ //
-void Game::FixedUpdate()
-{
-	world->FixedUpdate();
-	input.ClearButtonsState();
 }
 
 // ------------------------------------------------------------------------------------ //
@@ -144,6 +135,15 @@ void Game::Update()
 	}
 
 	world->Update();
+	input.ClearButtonsState();
+}
+
+// ------------------------------------------------------------------------------------ //
+// Render game
+// ------------------------------------------------------------------------------------ //
+void Game::Render()
+{
+	world->Render();
 }
 
 // ------------------------------------------------------------------------------------ //

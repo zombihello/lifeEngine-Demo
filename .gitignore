@@ -33,4 +33,4 @@
 
 src/build/*
 build-*/*
-CMakeLists.txt.user
+src/CMakeLists.txt.user

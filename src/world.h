@@ -31,8 +31,8 @@ public:
 
 	bool			LoadLevel( const std::string& MapName );
 	void			UnloadLevel();
-	void			FixedUpdate();
 	void			Update();
+	void			Render();
 
 private:
 	le::ILevel*		level;
