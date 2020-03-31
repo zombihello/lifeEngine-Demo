@@ -26,16 +26,6 @@ void Func_Door::Update()
 {
 	if ( !model ) return;
 
-	if ( isNeedUpdate )
-	{
-		model->SetPosition( position );
-		body->SetPosition( position );
-
-		startRotation = le::Quaternion_t( le::Vector3D_t( 0.f, 0.f, 0.f ) );
-		endRotation = le::Quaternion_t( le::Vector3D_t( 0.f, glm::radians( angleMax ), 0.f ) );
-		isNeedUpdate = false;
-	}
-
 	// This test code. In releale mast be deleted
 	if ( g_inputSystem->IsKeyDown( le::BC_KEY_F ) )
 	{
@@ -67,26 +57,16 @@ void Func_Door::Update()
 // ------------------------------------------------------------------------------------ //
 void Func_Door::KeyValue( const char* Key, const char* Value )
 {
-	if ( level && strcmp( Key, "model" ) == 0 )
-	{
-		int			idModel = StringToNumber< int >( Value, -1 );
-		if ( idModel == -1 )		return;
-
-		model = level->GetModel( idModel );
-		body = level->GetBody( idModel );
-
-		if ( model ) model->IncrementReference();
-		if ( body ) body->IncrementReference();
-	}
-	else if ( strcmp( Key, "origin" ) == 0 )
+	if ( strcmp( Key, "origin" ) == 0 )
 	{
 		position = StringToVector3D( Value );
-		isNeedUpdate = true;
+		if ( model ) model->SetPosition( position );
+		if ( body ) body->SetPosition( position );
 	}
 	else if ( strcmp( Key, "AngleMax" ) == 0 )
 	{
 		angleMax = StringToNumber< float >( Value, DEFAULT_ANGLE_MAX );
-		isNeedUpdate = true;
+		endRotation = le::Quaternion_t( le::Vector3D_t( 0.f, glm::radians( angleMax ), 0.f ) );
 	}
 	else if ( strcmp( Key, "SpeedOpen" ) == 0 )
 		speedOpen = StringToNumber< float >( Value, DEFAULT_SPEED_OPEN );
@@ -98,7 +78,6 @@ void Func_Door::KeyValue( const char* Key, const char* Value )
 // Constructor
 // ------------------------------------------------------------------------------------ //
 Func_Door::Func_Door() :
-	isNeedUpdate( false ),
 	isOpen( false ),
 	isClose( true ),
 	model( nullptr ),
@@ -106,7 +85,9 @@ Func_Door::Func_Door() :
 	donePercentag( 0.f ),
 	angleMax( DEFAULT_ANGLE_MAX ),
 	speedOpen( DEFAULT_SPEED_OPEN ),
-	speedClose( DEFAULT_SPEED_CLOSE )
+	speedClose( DEFAULT_SPEED_CLOSE ),
+	startRotation( le::Vector3D_t( 0.f, 0.f, 0.f ) ),
+	endRotation( le::Vector3D_t( 0.f, glm::radians( angleMax ), 0.f ) )
 {}
 
 // ------------------------------------------------------------------------------------ //
@@ -116,7 +97,67 @@ Func_Door::~Func_Door()
 {
 	if ( model )
 	{
-		if ( model->GetCountReferences() <= 1 )			model->Release();
-		else											model->DecrementReference();
+		if ( model->GetCountReferences() <= 1 )
+			model->Release();
+		else
+			model->DecrementReference();
 	}
+
+	if ( body )
+	{
+		g_physicsSystem->RemoveBody( body );
+
+		if ( body->GetCountReferences() <= 1 )
+			body->Release();
+		else
+			body->DecrementReference();
+	}
+}
+
+// ------------------------------------------------------------------------------------ //
+// Render entity
+// ------------------------------------------------------------------------------------ //
+void Func_Door::Render( le::IStudioRender* StudioRender )
+{
+	if ( !model ) return;
+	StudioRender->SubmitMesh( model->GetMesh(), model->GetTransformation(), model->GetStartFace(), model->GetCountFace() );
+}
+
+// ------------------------------------------------------------------------------------ //
+// Set entity model
+// ------------------------------------------------------------------------------------ //
+void Func_Door::SetModel( le::IModel* Model, le::IBody* Body )
+{
+	model = Model;
+	body = Body;
+
+	if ( model )
+	{
+		model->IncrementReference();
+		model->SetPosition( position );
+	}
+
+	if ( body )
+	{
+		body->IncrementReference();
+		body->SetPosition( position );
+	}
+}
+
+// ------------------------------------------------------------------------------------ //
+// Is entity visible
+// ------------------------------------------------------------------------------------ //
+bool Func_Door::IsVisible( le::ICamera* Camera ) const
+{
+	if ( !model ) return false;
+	return Camera->IsVisible( model->GetMin(), model->GetMax() );
+}
+
+// ------------------------------------------------------------------------------------ //
+// Get center entity
+// ------------------------------------------------------------------------------------ //
+le::Vector3D_t Func_Door::GetCenter() const
+{
+	if ( !model ) return position;
+	return ( model->GetMax() + model->GetMin() ) / 2.f;
 }

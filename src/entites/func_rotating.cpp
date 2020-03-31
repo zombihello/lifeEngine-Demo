@@ -11,6 +11,8 @@
 #include <string.h>
 
 #include "engine/ilevel.h"
+
+#include "../global.h"
 #include "func_rotating.h"
 
 #define			DEFAULT_SPEED			0.03f
@@ -21,13 +23,6 @@
 void Func_Rotating::Update()
 {
 	if ( !model ) return;
-	if ( isNeedUpdatePosition )
-	{
-		model->SetPosition( position );
-		body->SetPosition( position );
-
-		isNeedUpdatePosition = false;
-	}
 
 	model->Rotate( le::Vector3D_t( 0, speed, 0 ) );
 	body->SetRotation( model->GetRotation() );
@@ -38,23 +33,13 @@ void Func_Rotating::Update()
 // ------------------------------------------------------------------------------------ //
 void Func_Rotating::KeyValue( const char* Key, const char* Value )
 {
-	if ( level && strcmp( Key, "model" ) == 0 )
-	{
-		int			idModel = StringToNumber< int >( Value, -1 );
-		if ( idModel == -1 )		return;
-
-		model = level->GetModel( idModel );
-		body = level->GetBody( idModel );
-
-		if ( model ) model->IncrementReference();
-		if ( body ) body->IncrementReference();
-	}
-	else if ( strcmp( Key, "Speed" ) == 0 )
+	if ( strcmp( Key, "Speed" ) == 0 )
 		speed = StringToNumber< float >( Value, DEFAULT_SPEED );
 	else if ( strcmp( Key, "origin" ) == 0 )
 	{
 		position = StringToVector3D( Value );
-		isNeedUpdatePosition = true;
+		if ( model ) model->SetPosition( position );
+		if ( body ) body->SetPosition( position );
 	}
 }
 
@@ -62,9 +47,9 @@ void Func_Rotating::KeyValue( const char* Key, const char* Value )
 // Constructor
 // ------------------------------------------------------------------------------------ //
 Func_Rotating::Func_Rotating():
-	isNeedUpdatePosition( false ),
+	speed( DEFAULT_SPEED ),
 	model( nullptr ),
-	speed( DEFAULT_SPEED )
+	body( nullptr )
 {}
 
 // ------------------------------------------------------------------------------------ //
@@ -77,4 +62,59 @@ Func_Rotating::~Func_Rotating()
 		if ( model->GetCountReferences() <= 1 )			model->Release();
 		else											model->DecrementReference();
 	}
+
+	if ( body )
+	{
+		g_physicsSystem->RemoveBody( body );
+		if ( body->GetCountReferences() <= 1 )			body->Release();
+		else											body->DecrementReference();
+	}
+}
+
+// ------------------------------------------------------------------------------------ //
+// Render
+// ------------------------------------------------------------------------------------ //
+void Func_Rotating::Render( le::IStudioRender* StudioRender )
+{
+	if ( !model ) return;
+	StudioRender->SubmitMesh( model->GetMesh(), model->GetTransformation(), model->GetStartFace(), model->GetCountFace() );
+}
+
+// ------------------------------------------------------------------------------------ //
+// Set model
+// ------------------------------------------------------------------------------------ //
+void Func_Rotating::SetModel( le::IModel* Model, le::IBody* Body )
+{
+	model = Model;
+	body = Body;
+
+	if ( model )
+	{
+		model->IncrementReference();
+		model->SetPosition( position );
+	}
+
+	if ( body )
+	{
+		body->IncrementReference();
+		body->SetPosition( position );
+	}
+}
+
+// ------------------------------------------------------------------------------------ //
+// Is visible
+// ------------------------------------------------------------------------------------ //
+bool Func_Rotating::IsVisible( le::ICamera* Camera ) const
+{
+	if ( !model ) return false;
+	return Camera->IsVisible( model->GetMin(), model->GetMax() );
+}
+
+// ------------------------------------------------------------------------------------ //
+// Get center
+// ------------------------------------------------------------------------------------ //
+le::Vector3D_t Func_Rotating::GetCenter() const
+{
+	if ( !model ) return position;
+	return ( model->GetMax() + model->GetMin() ) / 2.f;
 }

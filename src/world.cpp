@@ -13,6 +13,7 @@
 #include "engine/lifeengine.h"
 #include "engine/imodel.h"
 
+#include "entites/prop_static.h"
 #include "global.h"
 #include "game.h"
 #include "world.h"
@@ -48,7 +49,10 @@ bool World::LoadLevel( const std::string& MapName )
 		model->SetRotation( le::Vector3D_t( glm::radians(90.f), 0, 0 ) );
 		model->Rotate( le::Vector3D_t( 0, glm::radians(24.f), 0 ) );
 
-		level->AddModel( model );
+		Prop_Static*	propModel = new Prop_Static();
+		propModel->SetModel( model, nullptr );
+		propModel->SetLevel( level );
+		level->AddEntity( propModel );
 	}
 
 	level->AddCamera( player->GetCamera() );
