@@ -16,6 +16,13 @@ if( LIFEENGINE_DEBUG )
         add_definitions( -DLIFEENGINE_DEBUG )
 endif()
 
+if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows" )
+    if ( MINGW )
+        set( CMAKE_C_FLAGS ${CMAKE_C_FLAGS} -static )
+        set( CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -static )
+    endif()
+endif()
+
 #
 #   --- Задаем переменные ---
 #

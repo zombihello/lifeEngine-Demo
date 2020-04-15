@@ -47,6 +47,7 @@ private:
 	void					DeleteBody();
 
 	bool							isInitialize;
+    float                           tiltCamera;
 
 	CAMERA_TYPE						cameraType;
 	le::ICamera*					camera;
