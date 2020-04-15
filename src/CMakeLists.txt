@@ -27,7 +27,9 @@ endif()
 #   --- Задаем переменные ---
 #
 
-file( GLOB SOURCE_FILES "*.h" "*.cpp" "entites/*.cpp" "entites/*.h" )
+file( GLOB SOURCE_FILES "*.h" "*.cpp"
+                        "entites/*.cpp" "entites/*.h"
+                        "scripts_api/entites/*.cpp" "scripts_api/entites/*.h")
 set( MODULE_NAME episodic )
 
 #
@@ -37,8 +39,12 @@ set( MODULE_NAME episodic )
 add_library( ${MODULE_NAME} SHARED ${SOURCE_FILES} )
 set_target_properties( ${MODULE_NAME} PROPERTIES PREFIX "" )
 include_directories( ${CMAKE_BINARY_DIR}/${MODULE_NAME} )
+include_directories( ./)
+
+file( GLOB SCRIPTAPI_GAME "scripts_api/entites/*.h" )
 
 install( TARGETS ${MODULE_NAME} DESTINATION ${BUILD_DIR} )
+install( FILES ${SCRIPTAPI_GAME} DESTINATION ${BUILD_DIR}/scripts/entites )
 
 add_custom_target( Launch DEPENDS ${MODULE_NAME} )
 add_custom_command( TARGET Launch
@@ -57,4 +63,5 @@ if ( NOT LIFEENGINE_SDK_FOUND )
     return()
 else()
     include_directories( ${LIFEENGINE_SDK_INCLUDE} )
+    include_directories( ${LIFEENGINE_SDK_SCRIPTAPI_INCLUDE} )
 endif()

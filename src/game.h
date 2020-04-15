@@ -12,6 +12,7 @@
 #define GAME_H
 
 #include "engine/igame.h"
+#include "engine/iscript.h"
 
 #include "gamefactory.h"
 #include "input.h"
@@ -39,6 +40,9 @@ public:
 	inline GameFactory*		GetFactory()	{ return &gameFactory; }	
 
 private:
+	typedef void* ( *StartFn_t )( void* Level );
+	typedef void* ( *UpdateFn_t )();
+
 	bool			isDebugMode;
 	bool			isShowingGBuffer;
 	bool			isEnablePhysicsDebug;
@@ -46,6 +50,8 @@ private:
 
 	GameFactory		gameFactory;
 	Input			input;
+	le::IScript*	scr_test;
+	UpdateFn_t		update;
 
 	World*			world;	
 };

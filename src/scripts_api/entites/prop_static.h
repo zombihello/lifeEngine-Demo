@@ -8,40 +8,27 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef WORLD_H
-#define WORLD_H
+#ifndef API_PROP_STATIC_H
+#define API_PROP_STATIC_H
 
-#include <string>
-
-#include "engine/ilevel.h"
-#include "tsingleton.h"
+#include "engine/model.h"
+#include "physics/body.h"
 
 //---------------------------------------------------------------------//
 
-class Player;
-class HUD;
+typedef void*			ent_propStatic_t;
 
 //---------------------------------------------------------------------//
 
-class World : public TSingleton< World >
-{
-public:
-	World();
-	~World();
+/* Create prop static */
+extern ent_propStatic_t				PropStatic_Create();
 
-	bool			LoadLevel( const std::string& MapName );
-	void			UnloadLevel();
-	void			Update();
-	void			Render();
+/* Delete prop static */
+extern void							PropStatic_Delete( ent_propStatic_t Object );
 
-	inline le::ILevel*		GetLevel() const { return level; }
-
-private:
-	le::ILevel*		level;
-	Player*			player;
-	HUD*			hud;
-};
+/* Set model */
+extern void							PropStatic_SetModel( ent_propStatic_t Object, model_t Model, body_t Body );
 
 //---------------------------------------------------------------------//
 
-#endif // !WORLD_H
+#endif // API_PROP_STATIC_H

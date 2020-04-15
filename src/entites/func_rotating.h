@@ -11,8 +11,10 @@
 #ifndef FUNC_ROTATING_H
 #define FUNC_ROTATING_H
 
+#include "common/types.h"
 #include "engine/imodel.h"
 #include "physics/ibody.h"
+
 #include "baseentity.h"
 
 //---------------------------------------------------------------------//
@@ -20,17 +22,21 @@
 class Func_Rotating : public BaseEntity
 {
 public:
-	// IEntity
-	virtual void					Update();
+	// IEntity	
 	virtual void					KeyValue( const char* Key, const char* Value );
+	virtual void					Update();
+	virtual void					Render( le::IStudioRender* StudioRender );
+
+	virtual void					SetModel( le::IModel* Model, le::IBody* Body );
+	virtual bool					IsVisible( le::ICamera* Camera ) const;
+	virtual le::Vector3D_t			GetCenter() const;
 
 	// Func_Rotating
 	Func_Rotating();
 	~Func_Rotating();
 
 private:
-	bool					isNeedUpdatePosition;
-	float					speed;
+	float					speed;	
 
 	le::IModel*				model;
 	le::IBody*				body;

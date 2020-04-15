@@ -19,8 +19,13 @@ class Info_Player_Start : public BaseEntity
 {
 public:
 	// IEntity
-	virtual void					Update();
 	virtual void					KeyValue( const char* Key, const char* Value );
+	virtual void					Update();	
+	virtual void					Render( le::IStudioRender* StudioRender );
+
+	virtual void					SetModel( le::IModel* Model, le::IBody* Body );
+
+	virtual bool					IsVisible( le::ICamera* Camera ) const;
 };
 
 //---------------------------------------------------------------------//

@@ -19,15 +19,18 @@
 class BaseEntity : public le::IEntity
 {
 public:
-	// IEntity
-	virtual void					Update();
-	virtual void					KeyValue( const char* Key, const char* Value );
+	// IReferenceObject
+	virtual void					IncrementReference();
+	virtual void					DecrementReference();
+	virtual void					Release();
+	virtual le::UInt32_t			GetCountReferences() const;
 
+	// IEntity
 	virtual void					SetLevel( le::ILevel* Level );
 	virtual void					SetPosition( const le::Vector3D_t& Position );
 
-	virtual le::ILevel*				GetLevel() const;
 	virtual const le::Vector3D_t&	GetPosition() const;
+	virtual le::Vector3D_t			GetCenter() const;
 
 	// BaseEntity
 	BaseEntity();
@@ -51,6 +54,9 @@ protected:
 
 	le::ILevel*					level;
 	le::Vector3D_t				position;
+
+private:
+	le::UInt32_t				countReferences;
 };
 
 //---------------------------------------------------------------------//

@@ -1,0 +1,26 @@
+{
+	"version": 2,
+	"surface": "wood",
+	"editor": "textures/freeze/UVFreezeColor.jpg",
+	
+	"technique":
+	{
+		"type": "deffered_shading",
+		"pass":
+		{	
+			"shader": "UnlitGeneric",
+			"depthTest": true,
+			"depthWrite": true,
+			"blend": false,
+			"cullface": true,
+			"cullface_type": "back",
+			
+			"parameters": 
+			{
+				"basetexture": "textures/freeze/UVFreezeColor.jpg",
+				"normalmap": "textures/freeze/UVFreezeNormals.jpg",
+				"specularmap": "textures/freeze/UV FreezeMetalic.jpg"
+			}
+		}
+	}
+}

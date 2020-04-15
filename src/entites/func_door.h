@@ -21,15 +21,20 @@ class Func_Door : public BaseEntity
 {
 public:
 	// IEntity
-	virtual void					Update();
 	virtual void					KeyValue( const char* Key, const char* Value );
+	virtual void					Update();
+	virtual void					Render( le::IStudioRender* StudioRender );
+
+	virtual void					SetModel( le::IModel* Model, le::IBody* Body );
+
+	virtual bool					IsVisible( le::ICamera* Camera ) const;
+	virtual le::Vector3D_t			GetCenter() const;
 
 	// Func_Door
 	Func_Door();
 	~Func_Door();
 
 private:
-	bool					isNeedUpdate;
 	bool					isOpen;
 	bool					isClose;
 
@@ -41,7 +46,7 @@ private:
 	le::IModel*				model;
 	le::IBody*				body;
 	le::Quaternion_t		startRotation;
-	le::Quaternion_t		endRotation;
+	le::Quaternion_t		endRotation;	
 };
 
 //---------------------------------------------------------------------//
