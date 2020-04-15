@@ -8,9 +8,17 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include <vector>
+
 #include "engine/icamera.h"
 #include "engine/imodel.h"
+#include "engine/iresourcesystem.h"
+#include "engine/scriptdescriptor.h"
 #include "studiorender/istudiorender.h"
+#include "physics/ibody.h"
+
+#include "../global.h"
+#include "../world.h"
 #include "prop_static.h"
 
 // ------------------------------------------------------------------------------------ //
@@ -23,7 +31,14 @@ void Prop_Static::KeyValue( const char* Key, const char* Value )
 // Update logic
 // ------------------------------------------------------------------------------------ //
 void Prop_Static::Update()
-{}
+{
+	if ( body && !body->IsStatic() )
+	{
+		body->Activate();
+		model->SetPosition( body->GetPosition() );
+		model->SetRotation( body->GetRotation() );
+	}
+}
 
 // ------------------------------------------------------------------------------------ //
 // Render
@@ -40,7 +55,10 @@ void Prop_Static::Render( le::IStudioRender* StudioRender )
 void Prop_Static::SetModel( le::IModel* Model, le::IBody* Body )
 {
 	model = Model;
+	body = Body;
+
 	if ( model ) model->IncrementReference();
+	if ( body ) body->IncrementReference();
 }
 
 // ------------------------------------------------------------------------------------ //
@@ -79,5 +97,13 @@ Prop_Static::~Prop_Static()
 			model->Release();
 		else
 			model->DecrementReference();
+	}
+
+	if ( body )
+	{
+		if ( body->GetCountReferences() <= 1 )
+			body->Release();
+		else
+			body->DecrementReference();
 	}
 }

@@ -17,12 +17,20 @@
 #include "engine/ifactory.h"
 #include "engine/iwindow.h"
 #include "engine/iconcmd.h"
+#include "engine/iscriptsystem.h"
 
 #include "global.h"
 #include "game.h"
 #include "world.h"
 #include "player.h"
 #include "buildnum.h"
+
+namespace scripts_api
+{
+#include "scripts_api/entites/prop_static.h"
+}
+
+#define REGISTER_FUNCTION( Function )		( scriptSystem->RegisterFunction( #Function, ( void* ) &Function ) )
 
 //---------------------------------------------------------------------//
 
@@ -59,6 +67,7 @@ bool Game::Initialize( le::IEngine* Engine, le::UInt32_t CountArguments, const c
 		g_window = Engine->GetWindow();
 		g_resourceSystem = Engine->GetResourceSystem();
 		g_physicsSystem = Engine->GetPhysicsSystem();
+		le::IScriptSystem*			scriptSystem = Engine->GetScriptSystem();
 
 		g_consoleSystem->PrintInfo( "Eleot-Episodic build %i", Game_BuildNumber() );
 
@@ -76,7 +85,9 @@ bool Game::Initialize( le::IEngine* Engine, le::UInt32_t CountArguments, const c
 			else if ( strstr( Arguments[ index ], "-dev" ) || strstr( Arguments[ index ], "-debug" ) )
 				isDebugMode = true;
 		}
-srand( time( 0 ) );
+
+		srand( time( 0 ) );
+
 		// Initialize console commands
 		le::IFactory*			consoleSystemFactory = g_consoleSystem->GetFactory();
 		cmd_noclip = ( le::IConCmd* ) consoleSystemFactory->Create( CONCMD_INTERFACE_VERSION );
@@ -85,9 +96,23 @@ srand( time( 0 ) );
 		cmd_noclip->Initialize( "noclip", "Enabled fly mode", CMD_Noclip );
 		g_consoleSystem->RegisterCommand( cmd_noclip );
 
+		// Register Game API for scripts
+		using namespace			scripts_api;
+		REGISTER_FUNCTION( PropStatic_Create );
+		REGISTER_FUNCTION( PropStatic_Delete );
+		REGISTER_FUNCTION( PropStatic_SetModel );
+
 		input.Initialize();
 		world = new World();
 		if ( !world->LoadLevel( mapName ) )		throw std::runtime_error( "Level demo not loaded" );
+
+		scr_test = g_resourceSystem->LoadScript( "test", "scripts/test.c" );
+		if ( scr_test )
+		{
+			StartFn_t		startFn = ( StartFn_t ) scr_test->GetFunction( "Start" );
+			update = ( UpdateFn_t ) scr_test->GetFunction( "Update" );
+			if ( startFn )	startFn( world->GetLevel() );
+		}
 	}
 	catch ( const std::exception& Exception )
 	{
@@ -134,6 +159,7 @@ void Game::Update()
 		g_window->SetShowCursor( isShowingCursor );
 	}
 
+	if ( update ) update();
 	world->Update();
 	input.ClearButtonsState();
 }
@@ -157,6 +183,7 @@ void Game::OnEvent( const le::Event& Event )
 // ------------------------------------------------------------------------------------ //
 Game::Game() :
 	world( nullptr ),
+	scr_test( nullptr ),
 	isDebugMode( false ),
 	isShowingGBuffer( false ),
 	isEnablePhysicsDebug( false ),

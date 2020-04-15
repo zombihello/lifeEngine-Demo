@@ -12,6 +12,7 @@
 
 #include "engine/lifeengine.h"
 #include "engine/imodel.h"
+#include "physics/ibody.h"
 
 #include "entites/prop_static.h"
 #include "global.h"
@@ -19,6 +20,9 @@
 #include "world.h"
 #include "player.h"
 #include "hud.h"
+
+#include "engine/iscript.h"
+#include "engine/iscriptsystem.h"
 
 // ------------------------------------------------------------------------------------ //
 // Load level
@@ -36,7 +40,7 @@ bool World::LoadLevel( const std::string& MapName )
 	player->Initialize();
 	hud->Initialize();
 
-	le::IMesh*		mesh = g_resourceSystem->LoadMesh( "quake_axe", "models/Quake_axe.lmd" );
+	le::IMesh*		mesh = g_resourceSystem->LoadMesh( "axe", "models/axe.mdl" );
 	if ( mesh )
 	{
 		le::IFactory*			factory = g_engine->GetFactory();
@@ -48,6 +52,17 @@ bool World::LoadLevel( const std::string& MapName )
 		model->SetScale( le::Vector3D_t( 50, 50, 50 ) );
 		model->SetRotation( le::Vector3D_t( glm::radians(90.f), 0, 0 ) );
 		model->Rotate( le::Vector3D_t( 0, glm::radians(24.f), 0 ) );
+
+		/*le::ICollider*			collider = g_resourceSystem->LoadCollider( "axe", "models/axe.phy" );
+		le::IBody*				body = nullptr;
+		if ( collider )
+		{
+			body = ( le::IBody* ) g_physicsSystem->GetFactory()->Create( BODY_INTERFACE_VERSION );
+			body->Create( collider, 10, le::Vector3D_t( 0.f, 0.f, 0.f ), false );
+			body->SetPosition( model->GetPosition() );
+			body->SetRotation( model->GetRotation() );
+			g_physicsSystem->AddBody( body );
+		}*/
 
 		Prop_Static*	propModel = new Prop_Static();
 		propModel->SetModel( model, nullptr );
