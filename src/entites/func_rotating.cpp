@@ -77,7 +77,7 @@ Func_Rotating::~Func_Rotating()
 void Func_Rotating::Render( le::IStudioRender* StudioRender )
 {
 	if ( !model ) return;
-	StudioRender->SubmitMesh( model->GetMesh(), model->GetTransformation(), model->GetStartFace(), model->GetCountFace() );
+	StudioRender->SubmitModel( model, model->GetStartFace(), model->GetCountFace() );
 }
 
 // ------------------------------------------------------------------------------------ //

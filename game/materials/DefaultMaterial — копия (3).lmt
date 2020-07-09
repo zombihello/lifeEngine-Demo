@@ -1,0 +1,56 @@
+{
+	"version": 2,
+	"surface": "wood",
+	"editor": "textures/door02/door02.png",
+	
+	"shader": "UnlitGeneric",
+	"depthTest": true,
+	"depthWrite": true,
+	"blend": false,
+	"cullface": true,
+	"cullface_type": "back",
+	"controller": "scripts/defaultmaterial.as",
+	
+	"parameters": 
+	{
+		"basetexture": "textures/door02/door02.png",
+		"specularmap": "textures/door02/door02_S.png",
+		"normalmap": "textures/door02/door02_N.png",
+		"color": 
+		{
+			"type": "color",
+			"r": 1,
+			"g": 1,
+			"b": 1,
+			"a": 1
+		}
+	},
+	
+	"proxies":
+	{
+		"Animation":
+		{
+			"id":					0
+			"path":					"animations/fire.anim",
+			"animation":			"idle",
+			"delay":				0.05,
+			"textureRectVar":		"textureRect"
+		},
+		"Sine":
+		{
+			"sinemin":			0,
+			"sinemax":			360,
+			"sineoffset":		0.05,
+			"resultVar":		"color",
+			"changeComponent":	0
+		},
+		"Sine":
+		{
+			"sinemin":			0,
+			"sinemax":			360,
+			"sineoffset":		0.015,
+			"resultVar":		"color",
+			"changeComponent":	2
+		}
+	}
+}

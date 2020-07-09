@@ -1,5 +1,6 @@
 {
-	"title": "Eliot: Episodic",
-	"gameDLL": "episodic",
-	"icon": "valve.jpg"
+	"title": 			"Eleot: Episodic",
+	"gameDLL": 			"episodic",
+	"icon": 			"valve.jpg",
+	"resources": 		"$gameDir/"
 }

@@ -1,0 +1,19 @@
+{
+	"version": 2,
+	"surface": "wood",
+	"editor": "textures/radio/radioUV.jpg",
+	
+	"shader": "UnlitGeneric",
+	"depthTest": true,
+	"depthWrite": true,
+	"blend": false,
+	"cullface": true,
+	"cullface_type": "back",
+	
+	"parameters": 
+	{
+		"basetexture": "textures/radio/radioUV.jpg",
+		"specularmap": "textures/radio/radioOTRAJENIEEEEE.jpg",
+		"normalmap": "textures/radio/radioNormal.jpg"
+	}
+}

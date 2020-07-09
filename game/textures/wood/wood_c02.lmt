@@ -3,24 +3,17 @@
 	"surface": "wood",
 	"editor": "textures/wood/wood_c02_COLOR.jpg",
 	
-	"technique":
+	"shader": "LightmappedGeneric",
+	"depthTest": true,
+	"depthWrite": true,
+	"blend": false,
+	"cullface": true,
+	"cullface_type": "front",
+	
+	"parameters": 
 	{
-		"type": "deffered_shading",
-		"pass":
-		{	
-			"shader": "LightmappedGeneric",
-			"depthTest": true,
-			"depthWrite": true,
-			"blend": false,
-			"cullface": true,
-			"cullface_type": "front",
-			
-			"parameters": 
-			{
-				"basetexture": "textures/wood/wood_c02_COLOR.jpg",
-				"normalmap": "textures/wood/wood_c02_NRM.jpg",
-				"specularmap": "textures/wood/wood_c02_SPEC.jpg"
-			}
-		}
+		"basetexture": "textures/wood/wood_c02_COLOR.jpg",
+		"normalmap": "textures/wood/wood_c02_NRM.jpg",
+		"specularmap": "textures/wood/wood_c02_SPEC.jpg"
 	}
 }

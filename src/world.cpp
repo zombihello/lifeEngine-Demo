@@ -15,6 +15,8 @@
 #include "physics/ibody.h"
 
 #include "entites/prop_static.h"
+#include "entites/prop_pointlight.h"
+#include "entites/prop_directionallight.h"
 #include "global.h"
 #include "game.h"
 #include "world.h"
@@ -52,7 +54,7 @@ bool World::LoadLevel( const std::string& MapName )
 		model->SetScale( le::Vector3D_t( 50, 50, 50 ) );
 		model->SetRotation( le::Vector3D_t( glm::radians(90.f), 0, 0 ) );
 		model->Rotate( le::Vector3D_t( 0, glm::radians(24.f), 0 ) );
-
+	
 		/*le::ICollider*			collider = g_resourceSystem->LoadCollider( "axe", "models/axe.phy" );
 		le::IBody*				body = nullptr;
 		if ( collider )
@@ -68,6 +70,19 @@ bool World::LoadLevel( const std::string& MapName )
 		propModel->SetModel( model, nullptr );
 		propModel->SetLevel( level );
 		level->AddEntity( propModel );
+	}
+
+	Prop_PointLight*	pointLight = new Prop_PointLight();
+	pointLight->SetPosition( le::Vector3D_t( 0, 300, -55 ) );
+	level->AddEntity( pointLight );
+
+	//Prop_DirectionalLight* directionLight = new Prop_DirectionalLight();
+	//level->AddEntity( directionLight );
+
+	{
+		pointLight = new Prop_PointLight();
+		pointLight->SetPosition( le::Vector3D_t( -50, 280, 155 ) );
+		level->AddEntity( pointLight );
 	}
 
 	level->AddCamera( player->GetCamera() );

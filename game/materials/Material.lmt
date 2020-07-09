@@ -1,24 +1,16 @@
 {
 	"version": 2,
 	"surface": "wood",
-	"editor": "textures/Quake_axe.png",
-	
-	"technique":
+
+	"shader": "UnlitGeneric",
+	"depthTest": true,
+	"depthWrite": true,
+	"blend": false,
+	"cullface": true,
+	"cullface_type": "back",
+
+	"parameters":
 	{
-		"type": "deffered_shading",
-		"pass":
-		{	
-			"shader": "UnlitGeneric",
-			"depthTest": true,
-			"depthWrite": true,
-			"blend": false,
-			"cullface": true,
-			"cullface_type": "back",
-			
-			"parameters": 
-			{
-				"basetexture": "textures/Quake_axe.png"
-			}
-		}
+		"basetexture": "textures/Quake_axe.png"
 	}
 }

@@ -3,22 +3,15 @@
 	"surface": "wood",
 	"editor": "textures/dev/dev_192_gr_032x.jpg",
 
-	"technique":
-	{
-		"type": "deffered_shading",
-		"pass":
-		{
-			"shader": "LightmappedGeneric",
-			"depthTest": true,
-			"depthWrite": true,
-			"blend": false,
-			"cullface": true,
-			"cullface_type": "front",
+	"shader": "LightmappedGeneric",
+	"depthTest": true,
+	"depthWrite": true,
+	"blend": false,
+	"cullface": true,
+	"cullface_type": "front",
 
-			"parameters":
-			{
-				"basetexture": "textures/dev/dev_192_gr_032x.jpg"
-			}
-		}
+	"parameters":
+	{
+		"basetexture": "textures/dev/dev_192_gr_032x.jpg"
 	}
 }

@@ -1,0 +1,26 @@
+{
+	"version": 2,
+	"surface": "wood",
+
+	"shader": "UnlitGeneric",
+	"depthTest": true,
+	"depthWrite": true,
+	"blend": false,
+	"cullface": true,
+	"cullface_type": "back",
+
+	"parameters":
+	{
+		"basetexture": "textures/freeze/UVFreezeColor.jpg",
+		"specularmap": "textures/freeze/UV FreezeMetalic.jpg",
+		"normalmap": "textures/freeze/UVFreezeNormals.jpg",
+		"color": 
+		{
+			"type": "color",
+			"r": 0.141176,
+			"g": 0.839216,
+			"b": 0.0901961,
+			"a": 1
+		}
+	}
+}

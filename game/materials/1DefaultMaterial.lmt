@@ -1,0 +1,19 @@
+{
+	"version": 2,
+	"surface": "wood",
+	"editor": "textures/table/table.png",
+	
+	"shader": "UnlitGeneric",
+	"depthTest": true,
+	"depthWrite": true,
+	"blend": false,
+	"cullface": true,
+	"cullface_type": "back",
+	
+	"parameters": 
+	{
+		"basetexture": "textures/table/table.png",
+		"specularmap": "textures/table/table_SPEC.jpg",
+		"normalmap": "textures/table/table_NRM.jpg"
+	}
+}

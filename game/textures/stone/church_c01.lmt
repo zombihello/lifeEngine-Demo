@@ -3,24 +3,17 @@
 	"surface": "wood",
 	"editor": "textures/stone/church_c01_COLOR.jpg",
 	
-	"technique":
+	"shader": "LightmappedGeneric",
+	"depthTest": true,
+	"depthWrite": true,
+	"blend": false,
+	"cullface": true,
+	"cullface_type": "front",
+	
+	"parameters": 
 	{
-		"type": "deffered_shading",
-		"pass":
-		{	
-			"shader": "LightmappedGeneric",
-			"depthTest": true,
-			"depthWrite": true,
-			"blend": false,
-			"cullface": true,
-			"cullface_type": "front",
-			
-			"parameters": 
-			{
-				"basetexture": "textures/stone/church_c01_COLOR.jpg",
-				"normalmap": "textures/stone/church_c01_NRM.jpg",
-				"specularmap": "textures/stone/church_c01_SPEC.jpg"
-			}
-		}
+		"basetexture": "textures/stone/church_c01_COLOR.jpg",
+		"normalmap": "textures/stone/church_c01_NRM.jpg",
+		"specularmap": "textures/stone/church_c01_SPEC.jpg"
 	}
 }

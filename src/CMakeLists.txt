@@ -27,9 +27,7 @@ endif()
 #   --- Задаем переменные ---
 #
 
-file( GLOB SOURCE_FILES "*.h" "*.cpp"
-                        "entites/*.cpp" "entites/*.h"
-                        "scripts_api/entites/*.cpp" "scripts_api/entites/*.h")
+file( GLOB_RECURSE SOURCE_FILES "*.h" "*.cpp" )
 set( MODULE_NAME episodic )
 
 #
@@ -45,6 +43,7 @@ file( GLOB SCRIPTAPI_GAME "scripts_api/entites/*.h" )
 
 install( TARGETS ${MODULE_NAME} DESTINATION ${BUILD_DIR} )
 install( FILES ${SCRIPTAPI_GAME} DESTINATION ${BUILD_DIR}/scripts/entites )
+install( DIRECTORY "shaders/shaders" DESTINATION ${BUILD_DIR} )
 
 add_custom_target( Launch DEPENDS ${MODULE_NAME} )
 add_custom_command( TARGET Launch

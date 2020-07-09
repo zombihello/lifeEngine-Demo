@@ -1,0 +1,19 @@
+{
+	"version": 2,
+	"surface": "wood",
+	"editor": "textures/stones/stones.png",
+	
+	"shader": "UnlitGeneric",
+	"depthTest": true,
+	"depthWrite": true,
+	"blend": false,
+	"cullface": true,
+	"cullface_type": "back",
+	
+	"parameters": 
+	{
+		"basetexture": "textures/stones/stones.png",
+		"specularmap": "textures/stones/stones_S.png",
+		"normalmap": "textures/stones/stones_N.png"
+	}
+}

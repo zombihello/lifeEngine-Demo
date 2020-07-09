@@ -1,0 +1,18 @@
+{
+	"version": 2,
+	"surface": "brick",
+
+	"shader": "UnlitGeneric",
+	"depthTest": true,
+	"depthWrite": true,
+	"blend": false,
+	"cullface": true,
+	"cullface_type": "back",
+
+	"parameters":
+	{
+		"basetexture": "textures/wall/wall.png",
+		"specularmap": "textures/wall/wall_s.png",
+		"normalmap": "textures/wall/wall_n.png"
+	}
+}

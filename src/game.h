@@ -11,6 +11,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <string>
+
 #include "engine/igame.h"
 #include "engine/iscript.h"
 
@@ -42,6 +44,8 @@ public:
 private:
 	typedef void* ( *StartFn_t )( void* Level );
 	typedef void* ( *UpdateFn_t )();
+
+	void			LoadConfig( const std::string& Path );
 
 	bool			isDebugMode;
 	bool			isShowingGBuffer;

@@ -46,7 +46,7 @@ void Prop_Static::Update()
 void Prop_Static::Render( le::IStudioRender* StudioRender )
 {
 	if ( !model ) return;
-	StudioRender->SubmitMesh( model->GetMesh(), model->GetTransformation() );
+	StudioRender->SubmitModel( model );
 }
 
 // ------------------------------------------------------------------------------------ //
@@ -83,7 +83,8 @@ le::Vector3D_t Prop_Static::GetCenter() const
 // Constructor
 // ------------------------------------------------------------------------------------ //
 Prop_Static::Prop_Static() :
-	model( nullptr )
+	model( nullptr ),
+	body( nullptr )
 {}
 
 // ------------------------------------------------------------------------------------ //

@@ -12,6 +12,7 @@
 #include <string>
 
 #include "engine/ifactory.h"
+#include "engine/iresourcesystem.h"
 
 #include "global.h"
 #include "hud.h"
@@ -74,6 +75,7 @@ void HUD::Initialize()
 	versionEngine->SetCharacterSize( 25 );
 	versionEngine->SetPosition( le::Vector3D_t( 5, windowHeight - 25, 1 ) );
 	versionEngine->SetText( ( "Eleot-Episodic (build " + std::to_string( Game_BuildNumber() ) + ")" ).c_str() );
+	versionEngine->SetMaterial( g_resourceSystem->LoadMaterial( "text_versionGame", "materials/text_versionGame.lmt" ) );
 
 	isInitialize = true;
 }
@@ -86,6 +88,6 @@ void HUD::Render()
 	if ( !isInitialize ) return;
 
 	g_studioRender->BeginScene( camera );
-	g_studioRender->SubmitMesh( versionEngine->GetMesh(), versionEngine->GetTransformation() );
+	g_studioRender->SubmitText( versionEngine );
 	g_studioRender->EndScene();
 }

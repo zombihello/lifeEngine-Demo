@@ -12,12 +12,20 @@
 #include <string>
 #include <exception>
 #include <stdexcept>
+#include <fstream>
 
+#include "common/configurations.h"
+#include "common/gameinfo.h"
 #include "engine/lifeengine.h"
 #include "engine/ifactory.h"
 #include "engine/iwindow.h"
 #include "engine/iconcmd.h"
 #include "engine/iscriptsystem.h"
+#include "engine/ishaderfactory.h"
+#include "engine/imaterialsystem.h"
+#include "engine/iconvar.h"
+
+#include "shaders/mytextshader.h"
 
 #include "global.h"
 #include "game.h"
@@ -54,6 +62,51 @@ void CMD_Noclip( le::UInt32_t CountArguments, const char** Arguments )
 LIFEENGINE_GAME_API( Game )
 
 // ------------------------------------------------------------------------------------ //
+// Load config
+// ------------------------------------------------------------------------------------ //
+void Game::LoadConfig( const std::string& Path )
+{
+	if ( !g_engine || !g_consoleSystem ) return;
+
+	const le::GameInfo*		gameInfo = &g_engine->GetGameInfo();
+	std::string				fullPath = std::string( gameInfo->gameDir ) + "/" + Path;
+	std::ifstream			config( fullPath );
+	
+	if ( !config.is_open() )
+	{
+		std::ofstream			saveConfig( fullPath );
+		le::Configurations		configurations = g_engine->GetConfigurations();
+
+		// engine configures
+		saveConfig << configurations.windowWidth->GetName() << " " << configurations.windowWidth->GetValueInt() << std::endl;
+		saveConfig << configurations.windowHeight->GetName() << " " << configurations.windowHeight->GetValueInt() << std::endl;
+		saveConfig << configurations.windowFullscreen->GetName() << " " << configurations.windowFullscreen->GetValueBool() << std::endl;
+		saveConfig << configurations.mouseSensitivity->GetName() << " " << configurations.mouseSensitivity->GetValueFloat() << std::endl;
+		saveConfig << configurations.rvsinc->GetName() << " " << configurations.rvsinc->GetValueBool() << std::endl;
+
+		// game configures
+		saveConfig << "bind w move_forward\n" <<
+			"bind s move_backward\n" <<
+			"bind a move_left\n" <<
+			"bind d move_right\n" <<
+			"bind shift sprint\n" <<
+			"bind space jump";
+
+		g_consoleSystem->Exec( "bind w move_forward" );
+		g_consoleSystem->Exec( "bind s move_backward" );
+		g_consoleSystem->Exec( "bind a move_left" );
+		g_consoleSystem->Exec( "bind d move_right" );
+		g_consoleSystem->Exec( "bind shift sprint" );
+		g_consoleSystem->Exec( "bind space jump" );
+
+		return;
+	}
+
+	config.close();
+	g_consoleSystem->Exec( std::string( "exec " + Path ).c_str() );
+}
+
+// ------------------------------------------------------------------------------------ //
 // Initialize game
 // ------------------------------------------------------------------------------------ //
 bool Game::Initialize( le::IEngine* Engine, le::UInt32_t CountArguments, const char** Arguments )
@@ -69,7 +122,10 @@ bool Game::Initialize( le::IEngine* Engine, le::UInt32_t CountArguments, const c
 		g_physicsSystem = Engine->GetPhysicsSystem();
 		le::IScriptSystem*			scriptSystem = Engine->GetScriptSystem();
 
+		Engine->GetMaterialSystem()->GetShaderFactory()->Register( MyTextShader::GetDescriptor() );
 		g_consoleSystem->PrintInfo( "Eleot-Episodic build %i", Game_BuildNumber() );
+
+		LoadConfig( "config.cfg" );
 
 		isShowingCursor = false;
 		g_window->SetShowCursor( isShowingCursor );

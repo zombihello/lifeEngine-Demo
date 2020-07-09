@@ -130,12 +130,12 @@ void Input::Initialize()
 	g_consoleSystem->RegisterCommand( cmd_jump );
 
 	// Binding on keys commands for move player
-	g_consoleSystem->Exec( "bind w move_forward" );
+	/*g_consoleSystem->Exec( "bind w move_forward" );
 	g_consoleSystem->Exec( "bind s move_backward" );
 	g_consoleSystem->Exec( "bind a move_left" );
 	g_consoleSystem->Exec( "bind d move_right" );
 	g_consoleSystem->Exec( "bind shift sprint" );
-	g_consoleSystem->Exec( "bind space jump" );
+	g_consoleSystem->Exec( "bind space jump" );*/
 }
 
 // ------------------------------------------------------------------------------------ //
