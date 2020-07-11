@@ -90,7 +90,8 @@ void Game::LoadConfig( const std::string& Path )
 			"bind a move_left\n" <<
 			"bind d move_right\n" <<
 			"bind shift sprint\n" <<
-			"bind space jump";
+			"bind space jump\n"
+			"bind e flashlight\n";
 
 		g_consoleSystem->Exec( "bind w move_forward" );
 		g_consoleSystem->Exec( "bind s move_backward" );
@@ -98,6 +99,7 @@ void Game::LoadConfig( const std::string& Path )
 		g_consoleSystem->Exec( "bind d move_right" );
 		g_consoleSystem->Exec( "bind shift sprint" );
 		g_consoleSystem->Exec( "bind space jump" );
+		g_consoleSystem->Exec( "bind e flashlight" );
 
 		return;
 	}

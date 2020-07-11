@@ -11,8 +11,8 @@
 
 	"parameters":
 	{
-		"basetexture": "/textures/door02/door02.png",
-		"normalmap": "/textures/door02/door02_N.png",
-		"specularmap": "/textures/door02/door02_S.png"
+		"basetexture": "/textures/stones/stones.png",
+		"normalmap": "/textures/stones/stones_N.png",
+		"specularmap": "/textures/stones/stones_S.png"
 	}
 }

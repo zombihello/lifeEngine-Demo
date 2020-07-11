@@ -16,6 +16,7 @@
 #include "physics/icharactercontroller.h"
 
 #include "tsingleton.h"
+#include "entites/prop_spotlight.h"
 
 //---------------------------------------------------------------------//
 
@@ -47,9 +48,12 @@ private:
 	void					DeleteBody();
 
 	bool							isInitialize;
+	bool							isFlashlightEnabled;
+	bool							isFlashlightPressed; // this is temp flag
     float                           tiltCamera;
 
 	CAMERA_TYPE						cameraType;
+	Prop_SpotLight					spotLight;
 	le::ICamera*					camera;
 	le::ICharcterController*		controller;
 };

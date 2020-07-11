@@ -17,8 +17,9 @@
 #include "game.h"
 #include "player.h"
 #include "input.h"
+#include "world.h"
 
-#define			PLAYER_HEIGHT           161.f
+#define			PLAYER_HEIGHT           151.f
 #define			PLAYER_RADIUS           20.f
 #define         CAMERA_MAX_TILT         3.f
 #define         CAMERA_OFFSET_TILT      0.5f
@@ -29,6 +30,8 @@
 Player::Player() :
     camera( nullptr ),
     isInitialize( false ),
+    isFlashlightEnabled( false ),
+    isFlashlightPressed( false ),
     controller( nullptr ),
     cameraType( CT_PHYSICS ),
     tiltCamera( 0.f )
@@ -67,10 +70,40 @@ void Player::Initialize()
     camera->InitProjection_Perspective( 75.f, ( float ) windowWidth / ( float ) windowHeight, 0.1f, 2500.f );
     g_physicsSystem->SetDebugCamera( camera );
 
+    spotLight.IncrementReference();
+    spotLight.SetRadius( 350.f );
+    spotLight.SetHeight( 500.f );
+    spotLight.SetIntensivity( 11400.f );
+
     // Initialize body
     CreateBody();
 
     isInitialize = true;
+}
+
+// this is function is temp
+glm::quat safeQuatLookAt( glm::vec3 const& lookFrom, glm::vec3 const& lookTo, glm::vec3 const& up, glm::vec3 const& alternativeUp )
+{
+    glm::vec3  direction = lookTo - lookFrom;
+    float      directionLength = glm::length( direction );
+
+    // Check if the direction is valid; Also deals with NaN
+    if ( !( directionLength > 0.0001 ) )
+        return glm::quat( 1, 0, 0, 0 ); // Just return identity
+
+    // Normalize direction
+    direction /= directionLength;
+
+    // Is the normal up (nearly) parallel to direction?
+    if ( glm::abs( glm::dot( direction, up ) ) > .9999f )
+    {
+        // Use alternative up
+        return glm::quatLookAt( direction, alternativeUp ) * glm::angleAxis( glm::radians( 90.f ), glm::vec3( 1, 0, 0 ) );
+    }
+    else
+    {
+        return glm::quatLookAt( direction, up ) * glm::angleAxis( glm::radians( 90.f ), glm::vec3( 1, 0, 0 ) );
+    }
 }
 
 // ------------------------------------------------------------------------------------ //
@@ -78,10 +111,29 @@ void Player::Initialize()
 // ------------------------------------------------------------------------------------ //
 void Player::Update()
 {	
-    camera->RotateByMouse( g_inputSystem->GetMouseOffset(), g_inputSystem->GetMouseSensitivity() );
-
-    Input*			input = Input::GetInstance();
+    Input*          input = Input::GetInstance();
     bool			isSprint = input->IsButtonDown( BT_SPRINT );
+
+    camera->RotateByMouse( g_inputSystem->GetMouseOffset(), g_inputSystem->GetMouseSensitivity() );
+    
+    if ( !isFlashlightPressed && input->IsButtonDown( BT_FLASHLIGHT ) )
+    {
+        isFlashlightEnabled = !isFlashlightEnabled;
+        isFlashlightPressed = true;
+
+        if ( isFlashlightEnabled )
+            World::GetInstance()->GetLevel()->AddEntity( &spotLight );
+        else
+            World::GetInstance()->GetLevel()->RemoveEntity( &spotLight );
+    }
+    if ( isFlashlightPressed && !input->IsButtonDown( BT_FLASHLIGHT ) )
+        isFlashlightPressed = false;
+
+    if ( isFlashlightEnabled )
+    {
+        spotLight.SetPosition( camera->GetPosition() );
+        spotLight.SetRotation( safeQuatLookAt( camera->GetPosition(), camera->GetPosition() + camera->GetTargetDirection(), camera->GetUp(), le::Vector3D_t( 0.f, 1.f, 0.f ) ) );
+    }   
 
     switch ( cameraType )
     {
