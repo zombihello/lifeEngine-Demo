@@ -13,6 +13,7 @@
 
 #include "engine/iconcmd.h"
 #include "engine/icamera.h"
+#include "audio/isound.h"
 #include "physics/icharactercontroller.h"
 
 #include "tsingleton.h"
@@ -54,6 +55,7 @@ private:
 
 	CAMERA_TYPE						cameraType;
 	Prop_SpotLight					spotLight;
+	le::ISound*						sound;
 	le::ICamera*					camera;
 	le::ICharcterController*		controller;
 };

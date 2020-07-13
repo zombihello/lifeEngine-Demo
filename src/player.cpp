@@ -11,6 +11,7 @@
 #include <stdexcept>
 
 #include "engine/ifactory.h"
+#include "audio/iaudiosystem.h"
 #include "physics/shapecapsuledescriptor.h"
 
 #include "global.h"
@@ -33,6 +34,7 @@ Player::Player() :
     isFlashlightEnabled( false ),
     isFlashlightPressed( false ),
     controller( nullptr ),
+    sound( nullptr ),
     cameraType( CT_PHYSICS ),
     tiltCamera( 0.f )
 {}
@@ -46,6 +48,12 @@ Player::~Player()
 
     g_physicsSystem->SetDebugCamera( nullptr );
     DeleteBody();
+
+    if ( sound )
+    {
+        delete sound;
+        g_resourceSystem->UnloadSoundBuffer( "flashlight" );
+    }
 
     if ( camera->GetCountReferences() <= 1 )	camera->Release();
     else										camera->DecrementReference();
@@ -62,6 +70,15 @@ void Player::Initialize()
     le::IFactory*			engineFactory = g_engine->GetFactory();
     camera = ( le::ICamera* ) engineFactory->Create( CAMERA_INTERFACE_VERSION );
     if ( !camera )			throw std::runtime_error( "le::ICamera interface version[" CAMERA_INTERFACE_VERSION "] not found in engine factory" );
+
+    // Initialize sound
+    le::ISoundBuffer*       soundBuffer = g_resourceSystem->LoadSoundBuffer( "flashlight", "sounds/flashlight.ogg" );
+    if ( soundBuffer )
+    {
+        sound = ( le::ISound* ) g_engine->GetAudioSystem()->GetFactory()->Create( SOUND_INTERFACE_VERSION );
+        sound->Create();
+        sound->SetBuffer( soundBuffer );
+    }
 
     le::UInt32_t		windowWidth, windowHeight;
     g_window->GetSize( windowWidth, windowHeight );
@@ -125,6 +142,8 @@ void Player::Update()
             World::GetInstance()->GetLevel()->AddEntity( &spotLight );
         else
             World::GetInstance()->GetLevel()->RemoveEntity( &spotLight );
+
+       if ( sound ) sound->Play();
     }
     if ( isFlashlightPressed && !input->IsButtonDown( BT_FLASHLIGHT ) )
         isFlashlightPressed = false;
