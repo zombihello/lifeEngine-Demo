@@ -132,6 +132,9 @@ bool Game::Initialize( le::IEngine* Engine, le::UInt32_t CountArguments, const c
 
 		LoadConfig( "config.cfg" );
 
+		// If engine in editor mode - it's all
+		if ( g_engine->IsEditor() )		return true;
+
 		isShowingCursor = false;
 		g_window->SetShowCursor( isShowingCursor );
 
@@ -195,6 +198,9 @@ bool Game::Initialize( le::IEngine* Engine, le::UInt32_t CountArguments, const c
 // ------------------------------------------------------------------------------------ //
 void Game::Update()
 {
+	// If engine in editor mode - exit from this method
+	if ( g_engine->IsEditor() )		return;
+
 	// This code is temp. Mast be deleted when created gui console
 	if ( isDebugMode )
 	{
