@@ -35,6 +35,7 @@ Player::Player() :
     isFlashlightPressed( false ),
     controller( nullptr ),
     sound( nullptr ),
+    listener( nullptr ),
     cameraType( CT_PHYSICS ),
     tiltCamera( 0.f )
 {}
@@ -78,7 +79,11 @@ void Player::Initialize()
         sound = ( le::ISound* ) g_engine->GetAudioSystem()->GetFactory()->Create( SOUND_INTERFACE_VERSION );
         sound->Create();
         sound->SetBuffer( soundBuffer );
+        sound->SetRelativeToListener( true );
     }
+
+    // Getting listener from audio system
+    listener = g_engine->GetAudioSystem()->GetListener();
 
     le::UInt32_t		windowWidth, windowHeight;
     g_window->GetSize( windowWidth, windowHeight );
@@ -88,9 +93,9 @@ void Player::Initialize()
     g_physicsSystem->SetDebugCamera( camera );
 
     spotLight.IncrementReference();
-    spotLight.SetRadius( 350.f );
-    spotLight.SetHeight( 500.f );
-    spotLight.SetIntensivity( 11400.f );
+    spotLight.SetRadius( 850.f );
+    spotLight.SetHeight( 1500.f );
+    spotLight.SetIntensivity( 22400.f );
 
     // Initialize body
     CreateBody();
@@ -132,7 +137,10 @@ void Player::Update()
     bool			isSprint = input->IsButtonDown( BT_SPRINT );
 
     camera->RotateByMouse( g_inputSystem->GetMouseOffset(), g_inputSystem->GetMouseSensitivity() );
-    
+    listener->SetPosition( camera->GetPosition() );
+    listener->SetDirection( camera->GetTargetDirection() );
+    listener->SetUp( camera->GetUp() );
+
     if ( !isFlashlightPressed && input->IsButtonDown( BT_FLASHLIGHT ) )
     {
         isFlashlightEnabled = !isFlashlightEnabled;

@@ -15,6 +15,7 @@
 
 #include "engine/igame.h"
 #include "engine/iscript.h"
+#include "audio/istreamsound.h"
 
 #include "gamefactory.h"
 #include "input.h"
@@ -47,17 +48,18 @@ private:
 
 	void			LoadConfig( const std::string& Path );
 
-	bool			isDebugMode;
-	bool			isShowingGBuffer;
-	bool			isEnablePhysicsDebug;
-	bool			isShowingCursor;
+	bool					isDebugMode;
+	bool					isShowingGBuffer;
+	bool					isEnablePhysicsDebug;
+	bool					isShowingCursor;
 
-	GameFactory		gameFactory;
-	Input			input;
-	le::IScript*	scr_test;
-	UpdateFn_t		update;
+	GameFactory				gameFactory;
+	Input					input;
+	le::IScript*			scr_test;
+	le::IStreamSound*		music;
+	UpdateFn_t				update;
 
-	World*			world;	
+	World*					world;	
 };
 
 //---------------------------------------------------------------------//

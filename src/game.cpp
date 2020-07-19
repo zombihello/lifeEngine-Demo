@@ -24,6 +24,9 @@
 #include "engine/ishaderfactory.h"
 #include "engine/imaterialsystem.h"
 #include "engine/iconvar.h"
+#include "audio/iaudiosystem.h"
+#include "audio/isound.h"
+#include "audio/istreamsound.h"
 
 #include "shaders/mytextshader.h"
 
@@ -169,6 +172,14 @@ bool Game::Initialize( le::IEngine* Engine, le::UInt32_t CountArguments, const c
 			update = ( UpdateFn_t ) scr_test->GetFunction( "Update" );
 			if ( startFn )	startFn( world->GetLevel() );
 		}
+
+		music = g_resourceSystem->OpenStreamSound( "sounds/combine_harvester.ogg" );
+		if ( music )
+		{
+			music->SetLoop( true );
+			music->SetRelativeToListener( true );
+			music->Play();
+		}
 	}
 	catch ( const std::exception& Exception )
 	{
@@ -207,6 +218,18 @@ void Game::Update()
 			if ( player )
 				player->SetCameraType( isEnabledNoclip ? CT_FLY : CT_PHYSICS );
 		}
+	}
+
+	if ( music )
+	{
+		if ( g_inputSystem->IsKeyUp( le::BC_KEY_F4 ) )
+			music->Play();
+
+		if ( g_inputSystem->IsKeyUp( le::BC_KEY_F5 ) )
+			music->Pause();
+
+		if ( g_inputSystem->IsKeyUp( le::BC_KEY_F6 ) )
+			music->Stop();
 	}
 
 	if ( g_inputSystem->IsKeyUp( le::BC_KEY_ESCAPE ) )

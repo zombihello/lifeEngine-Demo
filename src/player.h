@@ -14,6 +14,7 @@
 #include "engine/iconcmd.h"
 #include "engine/icamera.h"
 #include "audio/isound.h"
+#include "audio/ilistener.h"
 #include "physics/icharactercontroller.h"
 
 #include "tsingleton.h"
@@ -58,6 +59,7 @@ private:
 	le::ISound*						sound;
 	le::ICamera*					camera;
 	le::ICharcterController*		controller;
+	le::IListener*					listener;
 };
 
 //---------------------------------------------------------------------//
