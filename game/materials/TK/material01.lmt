@@ -1,0 +1,17 @@
+{
+	"version": 2,
+	"surface": "unknow",
+
+	"shader": "UnlitGeneric",
+	"depthTest": true,
+	"depthWrite": true,
+	"blend": false,
+	"cullface": true,
+	"cullface_type": "front",
+
+	"parameters":
+	{
+		"basetexture": "/textures/TK/TKS_20mm_chassis_01_AM.png",
+		"normalmap": "/textures/TK/TKS_20mm_chassis_01_ANM.png"
+	}
+}

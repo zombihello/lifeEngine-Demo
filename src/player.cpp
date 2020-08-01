@@ -77,6 +77,7 @@ void Player::Initialize()
     if ( soundBuffer )
     {
         sound = ( le::ISound* ) g_engine->GetAudioSystem()->GetFactory()->Create( SOUND_INTERFACE_VERSION );
+        sound->IncrementReference();
         sound->Create();
         sound->SetBuffer( soundBuffer );
         sound->SetRelativeToListener( true );
@@ -162,6 +163,18 @@ void Player::Update()
         spotLight.SetRotation( safeQuatLookAt( camera->GetPosition(), camera->GetPosition() + camera->GetTargetDirection(), camera->GetUp(), le::Vector3D_t( 0.f, 1.f, 0.f ) ) );
     }   
 
+    if ( sound )
+    {
+        if ( g_inputSystem->IsKeyUp( le::BC_KEY_F7 ) )
+            sound->Play();
+
+        if ( g_inputSystem->IsKeyUp( le::BC_KEY_F8 ) )
+            sound->Pause();
+
+        if ( g_inputSystem->IsKeyUp( le::BC_KEY_F9 ) )
+            sound->Stop();
+    }
+
     switch ( cameraType )
     {
     case CT_PHYSICS:
@@ -190,7 +203,7 @@ void Player::Update()
                 camera->Rotate( le::Vector3D_t( 0.f, 0.f, CAMERA_OFFSET_TILT ) );
             }
         }
-        if ( input->IsButtonDown( BT_JUMP ) && controller->OnGround()  )
+        if ( input->IsButtonDown( BT_JUMP ) && controller->OnGround() )
             controller->Jump( le::Vector3D_t( 0.f, 80.f, 0.f ) );
 
         if ( !input->IsButtonDown( BT_MOVE_LEFT ) && !input->IsButtonDown( BT_MOVE_RIGHT ) )
